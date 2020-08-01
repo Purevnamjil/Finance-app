@@ -1,21 +1,3 @@
-
-
-var i1 = new Income(1, 'Salary', 250000);
-var i2 = new Income(2, 'Bet awards', 25000000);
-
-
-
-incomes.push(i1);
-incomes.push(i2);
-
-console.log(incomes)
-
-
-
-
-
-
-
 // 1.ДЭЛГЭЦТЭЙ АЖИЛЛАХ КОНТРОЛЛЕР
 var uiController = (function(){
   // DOM class variables
@@ -55,7 +37,7 @@ var financeController = (function(){
   };
   
   var data = {
-    allItems:{
+    items:{
       inc: [],
       exp: []
     },
@@ -63,20 +45,52 @@ var financeController = (function(){
       inc: 0,
       exp: 0
     }
-  }
+  };
+
+  return{
+
+    
+
+    addItem: function(type, desc, val){
+
+      var item, id;
+
+      if(data.items[type].length === 0 ){
+       id = 1;
+      } else{
+       id = (data.items[type].length - 1) + 1;
+      }
+
+      if(type === "inc") {
+        item = new Income( id, desc, val);
+      } else{
+        item = new Expense(id, desc, val)
+      }
+
+      data.items[type].push(item);
+    },
+
+    data: function(){
+      return data;
+    }
+  };
+  
+
 
 
 })();
 
 // 3.АПП КОНТРОЛЛЕР
-var appController = (function(uiController, fnController){
+var appController = (function(uiController, financeController){
 
   
   
   var ctrlAddItem = function(){
     // 1.Оруулах өгөгдөлийг дэлгэцээс олж авна
-    console.log(uiController.getInput())
+    var input = uiController.getInput();
+
     // 2.Олж авсан өгөгдлүүдээ санхүүгийн контроллерт дамжуулж тэнд хадгална.
+    financeController.addItem(input.type, input.description, input.value);
 
     // 3.Олж авсан өгөгдлүүдийг веб дээр үзүүлэх.
 
